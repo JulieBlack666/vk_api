@@ -13,13 +13,18 @@ def get_user_id(screen_name):
 
 def get_user_info(id):
     user_info = get(f"https://api.vk.com/method/users.get?user_ids={id}"
-                    f"&fields=sex,city&access_token={access_token}&v=5.76").json()['response'][0]
+                    f"&fields=sex,city,bdate&access_token={access_token}&v=5.76").json()['response'][0]
     sex = 'female' if user_info['sex'] == 1 else 'male'
     first_name = user_info['first_name']
     last_name = user_info['last_name']
     print(f"User: {first_name} {last_name}")
-    print(f'Sex: {sex}')
-    print(f"City: {user_info['city']['title']}\n")
+    if 'bdate' in user_info:
+        print(f"Birth date: {user_info['bdate']}")
+    if 'sex' in user_info:
+        print(f'Sex: {sex}')
+    if 'city' in user_info:
+        print(f"City: {user_info['city']['title']}")
+    print('\n')
     get_user_friends(id, first_name, last_name)
 
 
@@ -38,5 +43,8 @@ if __name__ == '__main__':
                                                  "about user and their friends list")
     parser.add_argument('id', type=str, help="id or screen name of the user")
     args = parser.parse_args()
-    user_id = args.id if args.id.isdigit() else get_user_id(args.id)
-    get_user_info(user_id)
+    try:
+        user_id = args.id if args.id.isdigit() else get_user_id(args.id)
+        get_user_info(user_id)
+    except Exception as e:
+        print(e)

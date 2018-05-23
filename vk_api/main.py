@@ -3,7 +3,7 @@ import argparse
 from requests import get
 
 
-access_token = '1e7d1fd20d79017ad9ac47168191912c1bc2736c309aae8e56c5368614f92f9db8c9eaa5ee918618a0b78'
+access_token = ''
 
 
 def get_user_id(screen_name):

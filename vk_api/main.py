@@ -7,8 +7,11 @@ access_token = ''
 
 
 def get_user_id(screen_name):
-    return get(f"https://api.vk.com/method/utils.resolveScreenName?screen_name={screen_name}&"
-               f"access_token={access_token}&v=5.76").json()['response']['object_id']
+    id_info = get(f"https://api.vk.com/method/utils.resolveScreenName?screen_name={screen_name}&"
+               f"access_token={access_token}&v=5.76").json()['response']
+    if not id_info:
+        raise Exception("Wrong screen name")
+    return id_info['object_id']
 
 
 def get_user_info(id):
